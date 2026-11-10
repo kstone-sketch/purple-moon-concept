@@ -162,8 +162,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 .note-tape{position:absolute;right:-6px;bottom:-34px;background:#fff8d8;color:#4a3a14;font:700 22px/1.1 var(--hand);padding:10px 16px 12px;transform:rotate(3deg);box-shadow:0 8px 18px rgba(0,0,0,.3);z-index:3;max-width:250px}
 .note-tape::before{content:"";position:absolute;top:-10px;left:50%;width:70px;height:20px;margin-left:-35px;background:rgba(217,184,242,.75);transform:rotate(-4deg)}
 @media (max-width:900px){
-  .hero-in{grid-template-columns:1fr;padding:38px 20px 80px;gap:34px}
-  .hero::before,.hero::after{width:60px;opacity:.35}
+  .hero-in{grid-template-columns:1fr;padding:76px 20px 104px;gap:34px}
+  /* phones: the side rails would show half roses, so the hero gets one whole garland across the top instead */
+  .hero::before{right:0;width:auto;bottom:auto;height:64px;background:url("images/roses-band.png") repeat-x center top/auto 64px;opacity:.75;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+  .hero::after{display:none}
   .photos{height:360px}
   .note-tape{right:6px;bottom:-26px;font-size:19px}
 }
@@ -208,18 +210,19 @@ button{font:inherit;color:inherit;cursor:pointer}
 @media (max-width:860px){.cats{grid-template-columns:1fr}}
 
 /* symbols */
-.syms{display:grid;grid-template-columns:repeat(10,1fr);gap:14px}
+.syms{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(96px,1fr);gap:14px;overflow-x:auto;padding:4px 2px 14px;scroll-snap-type:x mandatory}
+.syms>*{scroll-snap-align:start}
 .sym{background:none;border:0;padding:0;text-align:center;color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
 .sym .disc{width:calc(100% - 10px);aspect-ratio:1;border-radius:50%;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 0 0 4px #fff,0 0 0 5px var(--line);margin:5px 5px 10px;transition:box-shadow .2s,transform .2s}
 .sym .disc img{width:100%;height:100%;object-fit:cover}
 .sym:hover .disc{box-shadow:0 0 0 4px #fff,0 0 0 6px var(--purple);transform:scale(1.04)}
 .sym b{display:block;font-size:13.5px;font-weight:600;line-height:1.25}
 .sym small{color:var(--muted);font-size:12px}
-@media (max-width:1000px){.syms{grid-template-columns:repeat(5,1fr)}}
-@media (max-width:560px){.syms{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:560px){.syms{grid-auto-columns:92px}}
 
 /* tours + albums */
-.stubs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.stubs{display:grid;grid-auto-flow:column;grid-auto-columns:240px;gap:16px;overflow-x:auto;padding:12px 4px 18px;scroll-snap-type:x mandatory}
+.stubs>*{scroll-snap-align:start}
 .stub{position:relative;display:flex;text-align:left;background:var(--cream);color:var(--ink);border:1px solid #e8d8b8;padding:0;min-height:94px;border-radius:12px;overflow:hidden;transition:transform .2s}
 .stub:hover{transform:rotate(-1deg) translateY(-2px)}
 .stub .main{flex:1;padding:12px 14px}
@@ -459,6 +462,14 @@ dialog.drawer.left{margin:0 auto 0 0;border-radius:0 20px 20px 0;max-width:350px
 
 /* track */
 #track{max-width:560px}
+#demoNote{max-width:500px;background:var(--paper);overflow:visible}
+#demoNote .tape{position:absolute;top:-14px;left:50%;width:120px;height:30px;margin-left:-60px;transform:rotate(-3deg);background:repeating-linear-gradient(45deg,rgba(255,255,255,.4) 0 7px,transparent 7px 14px),rgba(201,160,240,.9)}
+.demo-note{padding:34px 32px 28px}
+.demo-note .hand{color:var(--purple);margin:0 0 6px}
+.demo-note h2{margin:0 0 12px;font:600 30px/1.1 var(--serif);font-variation-settings:"SOFT" 100,"WONK" 1}
+.demo-note p{margin:0 0 12px;color:var(--ink-2)}
+.demo-note .small{font-size:14px;color:var(--muted)}
+.demo-note .btn{margin-top:8px}
 .trk{padding:30px}
 .trk h2{margin:0 0 4px;font:600 28px var(--serif)}
 .trk>p{margin:0 0 18px;color:var(--muted)}
@@ -1093,6 +1104,20 @@ button.fact{cursor:pointer;font:inherit;font-size:13.5px;font-weight:600;color:v
 </dialog>
 
 <!-- track -->
+<!-- what the PayPal button shows on this concept -->
+<dialog id="demoNote" aria-labelledby="demoH">
+  <span class="tape" aria-hidden="true"></span>
+  <button class="dlg-x" data-close aria-label="Close">✕</button>
+  <div class="demo-note">
+    <p class="hand">just a heads up ~</p>
+    <h2 id="demoH">This is a demo site</h2>
+    <p>This page is a redesign concept for purplemoon.com, made to show what Michelle's shop could look like. It isn't the real store, so nothing can be bought here and no payment is taken.</p>
+    <p>On the finished site, this button would take you to PayPal to pay securely, the same way Purple Moon's checkout works today.</p>
+    <p class="small">Your cart is just saved in this browser, and nothing has been sent anywhere.</p>
+    <button class="btn" data-close>Got it, keep browsing</button>
+  </div>
+</dialog>
+
 <dialog id="track" aria-label="Track your order">
   <button class="dlg-x" data-close aria-label="Close">✕</button>
   <div class="trk">
@@ -1777,7 +1802,7 @@ document.addEventListener('click', e => {
   if (d.showmore !== undefined) { t.closest('details').querySelectorAll('[data-extra]').forEach(x => x.hidden = false); t.remove(); return; }
   if (d.cq) { const id = d.cq; cart[id] = Math.max(0, Math.min(10, (cart[id] || 0) + +d.d)); if (!cart[id]) delete cart[id]; store.set('pm_cart', cart); renderCart(); return; }
   if (d.crm) { delete cart[d.crm]; store.set('pm_cart', cart); renderCart(); return; }
-  if (d.checkout !== undefined) { toast('Demo only. On the real site this hands the cart to PayPal, the same checkout Purple Moon already uses.'); return; }
+  if (d.checkout !== undefined) { $('#demoNote').showModal(); return; }
 });
 function closeAll() { $$('dialog[open]').forEach(d => d.close()); showMega(false, true); }
 document.addEventListener('change', e => {
